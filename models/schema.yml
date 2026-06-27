@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  # 1. Customer Hub
+  - name: hub_customer
+    columns:
+      - name: hk_customer
+        tests: [unique, not_null]
+      - name: customer_id
+        tests: [unique, not_null]
+
+  # 2. Order Hub
+  - name: hub_order
+    columns:
+      - name: hk_order
+        tests: [unique, not_null]
+      - name: order_id
+        tests: [unique, not_null]
+
+  # 3. Product Hub
+  - name: hub_product
+    columns:
+      - name: hk_product
+        tests: [unique, not_null]
+      - name: product_id
+        tests: [unique, not_null]
+
+  # 4. Link Order-Customer (التقيل هنا: اختبارات العلاقات)
+  - name: link_order_customer
+    columns:
+      - name: hk_link_order_customer
+        tests: [unique, not_null]
+      
+      - name: hk_order
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_order')
+              field: hk_order
+
+      - name: hk_customer
+        tests:
+          - not_null
+          - relationships:
+              to: ref('hub_customer')
+              field: hk_customer
+      # 5. Customer Satellite
+  - name: sat_customer
+    columns:
+      - name: hk_customer
+        tests:
+          - not_null
+          # أهم اختبار هنا: التأكد إن الـ HK موجود فعلاً في الـ Hub الرئيسي!
+          - relationships:
+              to: ref('hub_customer')
+              field: hk_customer
+
+      - name: hash_diff
+        tests: [not_null]
+
+      - name: customer_name
+        tests: [not_null]        

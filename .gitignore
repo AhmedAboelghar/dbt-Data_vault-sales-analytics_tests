@@ -1,0 +1,7 @@
+dbt-env/
+dbt311/
+target/
+logs/
+dbt_packages/
+.DS_Store
+*.pyc

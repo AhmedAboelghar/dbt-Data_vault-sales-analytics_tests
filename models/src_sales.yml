@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw_sales
+    schema: public
+    tables:
+      - name: fact_orders
+      - name: DIM_Customer   # <-- السطر ده هو اللي كان ناقص!
