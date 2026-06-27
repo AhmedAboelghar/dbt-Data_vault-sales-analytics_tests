@@ -26,7 +26,7 @@ The objective of this project was to design a scalable data architecture that en
 ## 📂 Project Structure
 ```text
 .
-├── models/
+├── models/vault
 │   ├── hubs/         # Business keys
 │   ├── links/        # Relationships
 │   ├── satellites/   # Descriptive data & history
