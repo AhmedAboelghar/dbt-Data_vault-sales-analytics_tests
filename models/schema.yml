@@ -25,7 +25,7 @@ models:
       - name: product_id
         tests: [unique, not_null]
 
-  # 4. Link Order-Customer (التقيل هنا: اختبارات العلاقات)
+  # 4. Link Order-Customer 
   - name: link_order_customer
     columns:
       - name: hk_link_order_customer
@@ -50,7 +50,7 @@ models:
       - name: hk_customer
         tests:
           - not_null
-          # أهم اختبار هنا: التأكد إن الـ HK موجود فعلاً في الـ Hub الرئيسي!
+          
           - relationships:
               to: ref('hub_customer')
               field: hk_customer
@@ -59,4 +59,9 @@ models:
         tests: [not_null]
 
       - name: customer_name
-        tests: [not_null]        
+        tests: [not_null]   
+
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['active', 'inactive', 'suspended']       
