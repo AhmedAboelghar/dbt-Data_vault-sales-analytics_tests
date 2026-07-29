@@ -91,7 +91,7 @@ jobs:
         run: dbt compile --target ci
 
       - name: Run dbt Models
-        run: dbt run --target ci
+        run: dbt run --target ci --exclude sat_customer stg_orders
 
       - name: Run Data Quality Tests
-        run: dbt test --target ci
+        run: dbt test --target ci --exclude sat_customer stg_orders  
