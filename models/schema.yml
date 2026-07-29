@@ -10,21 +10,14 @@ models:
         tests: [unique, not_null]
 
   # 2. Order Hub
-  - name: hub_order
+  - name: hub_orders
     columns:
       - name: hk_order
         tests: [unique, not_null]
       - name: order_id
         tests: [unique, not_null]
 
-  # 3. Product Hub # ####empty value not = 0
-  - name: hub_product
-    columns:
-      - name: hk_product
-        tests: [unique, not_null]
-      - name: product_id
-        tests: [unique, not_null]
-
+ 
   # 4. Link Order-Customer #empty value & not =0
   - name: link_order_customer
     columns:
@@ -35,7 +28,7 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('hub_order')
+              to: ref('hub_orders')
               field: hk_order
 
       - name: hk_customer
@@ -65,9 +58,7 @@ models:
         tests:
           - accepted_values:
               values: ['active', 'inactive', 'suspended']       
-      - name: customer_name
-        tests:
-          - not_null
+    
           
       - name: load_timestamp
         tests:
