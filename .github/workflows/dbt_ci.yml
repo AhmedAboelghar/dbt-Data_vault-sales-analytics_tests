@@ -61,5 +61,9 @@ jobs:
       - name: Compile dbt Models
         run: dbt compile
 
+      # دي الخطوة اللي أضفناها عشان تبني الجداول الأول
+      - name: Run dbt Models
+        run: dbt run
+
       - name: Run Data Quality Tests
         run: dbt test
