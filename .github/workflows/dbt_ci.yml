@@ -1,6 +1,5 @@
 name: dbt Continuous Integration (Quality Gates)
 
-# الـ Pipeline هيشتغل أوتوماتيك لما حد يعمل Pull Request لفرع الـ main
 on:
   pull_request:
     branches:
@@ -11,7 +10,6 @@ jobs:
     name: Run dbt CI Pipeline
     runs-on: ubuntu-latest
 
-    # 1. إنشاء قاعدة بيانات PostgreSQL مؤقتة للـ CI
     services:
       postgres:
         image: postgres:13
@@ -40,11 +38,10 @@ jobs:
         run: pip install dbt-postgres
 
       - name: Setup dbt profiles.yml
-        # خطوة بتعمل ملف ربط الداتابيز المؤقتة عشان dbt يشتغل عليها
         run: |
           mkdir -p ~/.dbt
           cat <<EOF > ~/.dbt/profiles.yml
-          my_dbt_project:
+          my_postgres_project:
             target: ci
             outputs:
               ci:
@@ -61,10 +58,8 @@ jobs:
       - name: Install dbt Packages
         run: dbt deps
 
-      # 2. التأكد إن مفيش أي أخطاء في الـ SQL
       - name: Compile dbt Models
         run: dbt compile
 
-      # 3. تشغيل كل الاختبارات اللي عملناها (Bronze, Silver, Gold)
       - name: Run Data Quality Tests
         run: dbt test
