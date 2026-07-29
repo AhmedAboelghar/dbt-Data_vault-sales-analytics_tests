@@ -94,4 +94,5 @@ jobs:
         run: dbt run --target ci --exclude sat_customer stg_orders fct_sales
 
       - name: Run Data Quality Tests
-        run: dbt test --target ci --exclude sat_customer stg_orders fct_sales
+        run: dbt test --target ci --exclude sat_customer stg_orders fct_sales  
+        ###n
