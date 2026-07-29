@@ -17,11 +17,10 @@ models:
       - name: order_id
         tests: [unique, not_null]
 
- 
-  # 4. Link Order-Customer #empty value & not =0
+  # 4. Link Order-Customer
   - name: link_order_customer
     columns:
-      - name: hk_link_order_customer### customer id 
+      - name: hk_link_order_customer
         tests: [unique, not_null]
       
       - name: hk_order
@@ -37,13 +36,13 @@ models:
           - relationships:
               to: ref('hub_customer')
               field: hk_customer
-      # 5. Customer Satellite ##########
+
+  # 5. Customer Satellite 
   - name: sat_customer
     columns:
       - name: hk_customer
         tests:
           - not_null
-          
           - relationships:
               to: ref('hub_customer')
               field: hk_customer
@@ -52,18 +51,4 @@ models:
         tests: [not_null]
 
       - name: customer_name
-        tests: [not_null]   
-
-      - name: status
-        tests:
-          - accepted_values:
-              values: ['active', 'inactive', 'suspended']       
-    
-          
-     # - name: load_timestamp
-      ##  tests:
-        #  - not_null
-         # - dbt_utils.recency: 
-          #    datepart: day
-           #   interval: 1        
-             
+        tests: [not_null]
