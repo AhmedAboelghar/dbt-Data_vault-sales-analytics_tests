@@ -75,4 +75,4 @@ models:
           - dbt_utils.recency: 
               datepart: day
               interval: 1        
-              -- This is a test comment to trigger the CI pipeline
+              -- This is a test comment to trigger the CI pipeline hgjfjt
