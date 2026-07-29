@@ -58,21 +58,29 @@ jobs:
       - name: Install dbt Packages
         run: dbt deps --target ci
 
-      # 1. خطوة تحميل الـ Seeds (الـ city و customer الموجودين عندك)
       - name: Run dbt Seed
         run: dbt seed --target ci
 
-      # 2. خطوة إنشاء الـ Mock لجدول fact_orders عشان المشكلة تخلص فوري بدون ملفات كبيرة
-      - name: Create Mock fact_orders Table
+      # إنشاء الجداول الوهمية بالأعمدة المطلوبة بالضبط وبالحروف الكبيرة والصغيرة
+      - name: Create Mock Tables with Exact Columns
         run: |
           PGPASSWORD=ci_password psql -h localhost -U ci_user -d ci_db -c "
             CREATE TABLE IF NOT EXISTS public.fact_orders (
-                order_id INT,
-                customer_id INT,
-                order_date TIMESTAMP
+                \"Row ID\" INT,
+                \"Order ID\" VARCHAR(50),
+                \"Customer ID\" VARCHAR(50),
+                \"Product ID\" VARCHAR(50),
+                \"Customer_Key\" VARCHAR(50)
             );
-            INSERT INTO public.fact_orders (order_id, customer_id, order_date) 
-            VALUES (1, 101, NOW()), (2, 102, NOW());
+            INSERT INTO public.fact_orders (\"Row ID\", \"Order ID\", \"Customer ID\", \"Product ID\", \"Customer_Key\") 
+            VALUES (1, 'ORD-1', 'CUST-1', 'PROD-1', 'CK-1'), (2, 'ORD-2', 'CUST-2', 'PROD-2', 'CK-2');
+
+            CREATE TABLE IF NOT EXISTS public.DIM_Customer (
+                \"Customer ID\" VARCHAR(50),
+                \"Customer_Key\" VARCHAR(50)
+            );
+            INSERT INTO public.DIM_Customer (\"Customer ID\", \"Customer_Key\") 
+            VALUES ('CUST-1', 'CK-1'), ('CUST-2', 'CK-2');
           "
 
       - name: Compile dbt Models
