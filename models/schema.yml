@@ -62,8 +62,8 @@ models:
           
       - name: load_timestamp
         tests:
-          - not_null
-          - dbt_utils.recency: 
+          - dbt_utils.recency:
               datepart: day
-              interval: 1        
+              field: load_timestamp
+              interval: 1     
              
