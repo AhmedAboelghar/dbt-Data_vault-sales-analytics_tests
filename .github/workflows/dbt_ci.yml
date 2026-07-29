@@ -61,7 +61,6 @@ jobs:
       - name: Run dbt Seed
         run: dbt seed --target ci
 
-      # إنشاء الجداول الوهمية بالأعمدة المطلوبة بالضبط وبالحروف الكبيرة والصغيرة
       - name: Create Mock Tables with Exact Columns
         run: |
           PGPASSWORD=ci_password psql -h localhost -U ci_user -d ci_db -c "
@@ -70,16 +69,17 @@ jobs:
                 \"Order ID\" VARCHAR(50),
                 \"Customer ID\" VARCHAR(50),
                 \"Product ID\" VARCHAR(50),
-                \"Customer_Key\" VARCHAR(50)
+                \"Customer_Key\" VARCHAR(50),
+                \"Product_Key\" INT
             );
-            INSERT INTO public.fact_orders (\"Row ID\", \"Order ID\", \"Customer ID\", \"Product ID\", \"Customer_Key\") 
-            VALUES (1, 'ORD-1', 'CUST-1', 'PROD-1', 'CK-1'), (2, 'ORD-2', 'CUST-2', 'PROD-2', 'CK-2');
+            INSERT INTO public.fact_orders (\"Row ID\", \"Order ID\", \"Customer ID\", \"Product ID\", \"Customer_Key\", \"Product_Key\") 
+            VALUES (1, 'ORD-1', 'CUST-1', 'PROD-1', 'CK-1', 1), (2, 'ORD-2', 'CUST-2', 'PROD-2', 'CK-2', 2);
 
-            CREATE TABLE IF NOT EXISTS public.DIM_Customer (
+            CREATE TABLE IF NOT EXISTS public.\"DIM_Customer\" (
                 \"Customer ID\" VARCHAR(50),
                 \"Customer_Key\" VARCHAR(50)
             );
-            INSERT INTO public.DIM_Customer (\"Customer ID\", \"Customer_Key\") 
+            INSERT INTO public.\"DIM_Customer\" (\"Customer ID\", \"Customer_Key\") 
             VALUES ('CUST-1', 'CK-1'), ('CUST-2', 'CK-2');
           "
 
