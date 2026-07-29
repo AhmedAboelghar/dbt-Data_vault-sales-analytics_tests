@@ -56,14 +56,30 @@ jobs:
           EOF
 
       - name: Install dbt Packages
-        run: dbt deps
+        run: dbt deps --target ci
+
+      # 1. خطوة تحميل الـ Seeds (الـ city و customer الموجودين عندك)
+      - name: Run dbt Seed
+        run: dbt seed --target ci
+
+      # 2. خطوة إنشاء الـ Mock لجدول fact_orders عشان المشكلة تخلص فوري بدون ملفات كبيرة
+      - name: Create Mock fact_orders Table
+        run: |
+          PGPASSWORD=ci_password psql -h localhost -U ci_user -d ci_db -c "
+            CREATE TABLE IF NOT EXISTS public.fact_orders (
+                order_id INT,
+                customer_id INT,
+                order_date TIMESTAMP
+            );
+            INSERT INTO public.fact_orders (order_id, customer_id, order_date) 
+            VALUES (1, 101, NOW()), (2, 102, NOW());
+          "
 
       - name: Compile dbt Models
-        run: dbt compile
+        run: dbt compile --target ci
 
-      # دي الخطوة اللي أضفناها عشان تبني الجداول الأول
       - name: Run dbt Models
-        run: dbt run
+        run: dbt run --target ci
 
       - name: Run Data Quality Tests
-        run: dbt test
+        run: dbt test --target ci
