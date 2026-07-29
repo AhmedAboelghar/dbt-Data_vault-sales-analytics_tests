@@ -70,19 +70,21 @@ jobs:
                 \"Customer ID\" VARCHAR(50),
                 \"Product ID\" VARCHAR(50),
                 \"Customer_Key\" VARCHAR(50),
-                \"Product_Key\" INT
+                \"Product_Key\" INT,
+                \"Order Date\" TIMESTAMP
             );
-            INSERT INTO public.fact_orders (\"Row ID\", \"Order ID\", \"Customer ID\", \"Product ID\", \"Customer_Key\", \"Product_Key\") 
-            VALUES (1, 'ORD-1', 'CUST-1', 'PROD-1', 'CK-1', 1), (2, 'ORD-2', 'CUST-2', 'PROD-2', 'CK-2', 2);
+            INSERT INTO public.fact_orders (\"Row ID\", \"Order ID\", \"Customer ID\", \"Product ID\", \"Customer_Key\", \"Product_Key\", \"Order Date\") 
+            VALUES (1, 'ORD-1', 'CUST-1', 'PROD-1', 'CK-1', 1, NOW()), (2, 'ORD-2', 'CUST-2', 'PROD-2', 'CK-2', 2, NOW());
 
             CREATE TABLE IF NOT EXISTS public.\"DIM_Customer\" (
                 \"Customer ID\" VARCHAR(50),
-                \"Customer_Key\" VARCHAR(50)
+                \"Customer_Key\" VARCHAR(50),
+                \"Customer Name\" VARCHAR(100)
             );
-            INSERT INTO public.\"DIM_Customer\" (\"Customer ID\", \"Customer_Key\") 
-            VALUES ('CUST-1', 'CK-1'), ('CUST-2', 'CK-2');
+            INSERT INTO public.\"DIM_Customer\" (\"Customer ID\", \"Customer_Key\", \"Customer Name\") 
+            VALUES ('CUST-1', 'CK-1', 'Test Customer 1'), ('CUST-2', 'CK-2', 'Test Customer 2');
           "
-
+      
       - name: Compile dbt Models
         run: dbt compile --target ci
 
