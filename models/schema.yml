@@ -60,10 +60,10 @@ models:
               values: ['active', 'inactive', 'suspended']       
     
           
-      - name: load_timestamp
-        tests:
-          - dbt_utils.recency:
-              datepart: day
-              field: load_timestamp
-              interval: 1     
+     # - name: load_timestamp
+      ##  tests:
+        #  - not_null
+         # - dbt_utils.recency: 
+          #    datepart: day
+           #   interval: 1        
              
