@@ -3,10 +3,20 @@ my_postgres_project:
   outputs:
     dev:
       type: postgres
-      host: "{{ env_var('DB_HOST', 'host.docker.internal') }}"  # <--- التعديل هنا
+      host: "{{ env_var('DB_HOST', 'host.docker.internal') }}"
       user: postgres
       password: "123"
       port: 5432
       dbname: postgres
+      schema: public
+      threads: 1
+
+    ci:
+      type: postgres
+      host: "{{ env_var('DB_HOST', 'localhost') }}"
+      user: postgres
+      password: "{{ env_var('DB_PASSWORD', '123') }}"
+      port: 5432
+      dbname: "{{ env_var('DB_NAME', 'postgres') }}"
       schema: public
       threads: 1
